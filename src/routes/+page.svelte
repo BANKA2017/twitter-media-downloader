@@ -15,7 +15,7 @@
 		let bufferList = [],
 			aacBuffer;
 		for (const index in metaData.manifest.segments) {
-			//if (index < 1900) {continue}
+			//if (index < 1990) {continue}
 
 			count = Number(index) + 1;
 			const segment = metaData.manifest.segments[index];
@@ -199,7 +199,6 @@
 	};
 
 	const getSpaceInfo = async (link) => {
-		console.trace();
 		const id = ((match) => match?.[2] || match?.[1] || null)(
 			/^(1\w+)$|\/(1\w+)(?:\?|#|$)/g.exec(link)
 		);
@@ -245,9 +244,12 @@
 	let frameInfoList = [];
 	let audioCurrentTime = 0;
 	let spaceId = '';
-	//onMount(() => {
-	//	const audioDom = document.getElementsByTagName('audio')[0]
-	//})
+	onMount(() => {
+		const audioDom = document.getElementsByTagName('audio')[0]
+		audioDom.addEventListener('timeupdate', e => {
+			audioCurrentTime = e.target?.currentTime || 0
+		})
+	})
 	$: percent = (count / (metaData?.manifest?.segments?.length || 0)) * 100;
 	$: currentFrameInfo =
 		frameInfoList.find((x) => x.currentTime > firstTimeCursor + audioCurrentTime) || {};
@@ -281,7 +283,7 @@
 </div>
 
 <div class="grid grid-cols-12 p-3 md:p-10 gap-4">
-	<div class="col-span-12 md:col-span-2 text-center border-2">AD</div>
+	<div id="ad-1" class="col-span-12 md:col-span-2 text-center border-2">AD</div>
 	<div class="col-span-12 md:col-span-8">
 		{#if !spaceInfo?.data?.id}
 			<div class="flex justify-between gap-3">
@@ -327,9 +329,6 @@
 				<div class="h-full bg-sky-500 rounded-xl" style={`width: ${percent}%;`} />
 			</div>
 			{#if src}
-				<div class="py-3">
-					<audio {src} controls class="w-full" />
-				</div>
 				<div class="grid grid-cols-3 md:grid-col-4 lg:grid-cols-6 gap-2">
 					{#each participants as user, index}
 						<a
@@ -370,6 +369,9 @@
 				</div>
 			{/if}
 		{/if}
+		<div class={"py-3 " + (src ? 'block' : 'hidden')}>
+			<audio {src} controls class="w-full" />
+		</div>
 	</div>
-	<div class="col-span-12 md:col-span-2 text-center border-2">AD</div>
+	<div id="ad-2" class="col-span-12 md:col-span-2 text-center border-2">AD</div>
 </div>
