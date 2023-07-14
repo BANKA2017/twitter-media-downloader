@@ -290,7 +290,7 @@
                             </div>
                             <img
                                 class="rounded-full w-[50px]"
-                                src={(user.avatar || user.ProfileUrl).replace('_normal.', '.')}
+                                src={PUBLIC_BASEPATH + '/media/proxy/' + (user.avatar || user.ProfileUrl).replace('_normal.', '.').replace(/http(?:s|):\/\//g, '')}
                                 alt={user.display_name || user.UserName}
                             />
                         </div>
