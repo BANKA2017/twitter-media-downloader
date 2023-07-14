@@ -26,8 +26,9 @@
     let controller = null;
 
     const sourceOpen = async () => {
+        count = 0
         for (const index in metaData.manifest.segments.slice(indexPrefix, thread + indexPrefix)) {
-            count = Number(index) + 1;
+            count++;
             const segment = metaData.manifest.segments[index];
             fetchChunkWorker.postMessage({
                 uri: PUBLIC_BASEPATH + '/media/proxy/' + m3u8Prefix + segment.uri,
