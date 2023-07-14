@@ -1,5 +1,4 @@
 <script lang="ts">
-    import type { PageData } from './$types';
     import { onMount } from 'svelte';
     import { PUBLIC_BASEPATH } from '$env/static/public';
     import TwImage from '$lib/components/TwImage.svelte';
@@ -17,13 +16,15 @@
             await fetch(`${PUBLIC_BASEPATH}/online/api/v3/data/media/?tweet_id=${id}`)
         ).json();
     };
+
     onMount(async () => {
+        searchParams = Object.fromEntries([...new URLSearchParams(window.location.search)]);
         if (searchParams?.id) {
             await getMedia(searchParams.id);
         }
     });
 
-    $: searchParams = JSON.parse(data.searchParams);
+    $: searchParams = {};
     $: videoIndexList = ((mediaList) => {
         let tmpVideoIndexList = [];
         for (const mediaIndex in mediaList) {
@@ -33,7 +34,6 @@
         }
         return tmpVideoIndexList;
     })(mediaData?.data?.media_info || []);
-    export let data: PageData;
     //TODO download meta data
 </script>
 

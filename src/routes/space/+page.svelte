@@ -1,6 +1,5 @@
 <script lang="ts">
     import { Parser } from 'm3u8-parser';
-    import type { PageData } from './$types';
     import { onMount } from 'svelte';
     import { PUBLIC_BASEPATH } from '$env/static/public';
     import { concatBuffer } from '$lib/share/Parser';
@@ -145,6 +144,7 @@
     let frameInfoList = [];
     let audioCurrentTime = 0;
     onMount(() => {
+        searchParams = Object.fromEntries([...new URLSearchParams(window.location.search)]);
         controller = new AbortController();
         const audioDom = document.getElementsByTagName('audio')[0];
         audioDom.addEventListener('timeupdate', (e) => {
@@ -207,13 +207,12 @@
             }
         })();
 
-    $: searchParams = JSON.parse(data.searchParams);
+    $: searchParams = {};
 
     beforeNavigate(({ from, to, cancel }) => {
         fetchChunkWorker.terminate();
         controller.abort();
     });
-    export let data: PageData;
 </script>
 
 {#if loadingStatus}
