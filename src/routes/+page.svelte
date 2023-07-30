@@ -49,7 +49,7 @@
 <div class="rounded-xl bg-gray-200 dark:bg-gray-800 p-3 mb-5">
     <h3 class="text-2xl font-bold">How to...</h3>
     <p>
-        Input <abbr title="e.g. 1601692766257709056">tweet id</abbr> /
+        Place <abbr title="e.g. 1601692766257709056">tweet id</abbr> /
         <abbr title="e.g. https://twitter.com/Twitter/status/1601692766257709056">link</abbr>
         / <abbr title="e.g. 1LyxBqqpkPpJN">space id</abbr> /
         <abbr title="e.g. https://twitter.com/i/spaces/1LyxBqqpkPpJN">space link</abbr>

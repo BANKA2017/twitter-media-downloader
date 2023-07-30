@@ -1,12 +1,14 @@
 <script lang="ts">
     import { switchDarkMode, switchDarkModeAction } from '../share/DarkMode';
     import { browser } from '$app/environment';
+    import {onMount} from "svelte";
 
     let darkMode = globalThis.darkMode || '0';
     //get data from storage
-    if (browser) {
-        switchDarkModeAction(darkMode);
-    }
+
+    onMount(() => {
+      darkMode = localStorage.darkMode
+    })
 
     const switchDarkModeProxy = () => {
         darkMode = switchDarkMode(darkMode);

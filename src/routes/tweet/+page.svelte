@@ -108,6 +108,12 @@
                         {/if}
                     {/each}
                 </div>
+                <details class="collapse bg-gray-200 dark:bg-gray-800 transition-colors">
+                    <summary class="collapse-title text-xl font-medium hover:bg-gray-300 dark:hover:bg-gray-700">>_ Meta data</summary>
+                    <div class="collapse-content overflow-x-scroll bg-gray-800 p-3">
+                        <pre class="rounded-xl text-white">{JSON.stringify(mediaData.data, null, 4)}</pre>
+                    </div>
+                </details>
             </div>
         {/if}
     </div>

@@ -7,6 +7,7 @@
     import { beforeNavigate } from '$app/navigation';
     let metaData;
     let m3u8Prefix = '';
+    let m3u8Str = ''
     let count = 0;
     let firstTimeCursor = 0;
 
@@ -28,7 +29,6 @@
     const sourceOpen = async () => {
         count = 0
         for (const index in metaData.manifest.segments.slice(indexPrefix, thread + indexPrefix)) {
-            count++;
             const segment = metaData.manifest.segments[index];
             fetchChunkWorker.postMessage({
                 uri: PUBLIC_BASEPATH + '/media/proxy/' + m3u8Prefix + segment.uri,
@@ -92,7 +92,7 @@
             return;
         }
         try {
-            const m3u8Str = await (
+            m3u8Str = await (
                 await fetch(
                     `${PUBLIC_BASEPATH}/media/proxy/${link.replace(/http(?:s):\/\//g, '')}`,
                     {
@@ -217,21 +217,23 @@
 </script>
 
 {#if loadingStatus}
-    {#if loadingStatus === 'error'}
-        <div>
-            Invalid space id #{searchParams.id}, back to
-            <a
-                href="/"
-                class="dark:decoradetion-sky-300 decoration-sky-400 underline-offset-4 underline"
-                >main page</a
-            >...
-        </div>
-    {/if}
-    {#if loadingStatus !== 'error'}
-        <div>
-            loading space {loadingStatus} #{searchParams.id}...
-        </div>
-    {/if}
+    <div class="flex justify-center">
+        {#if loadingStatus === 'error'}
+            <div>
+                Invalid space id #{searchParams.id}, back to
+                <a
+                    href="/"
+                    class="dark:decoradetion-sky-300 decoration-sky-400 underline-offset-4 underline"
+                    >main page</a
+                >...
+            </div>
+        {/if}
+        {#if loadingStatus !== 'error'}
+            <div>
+                loading space {loadingStatus} #{searchParams.id}...
+            </div>
+        {/if}
+    </div>
 {/if}
 
 {#if !loadingStatus && spaceInfo?.data?.id}
@@ -290,7 +292,7 @@
                                 </svg>
                             </div>
                             <img
-                                class="rounded-full w-[50px]"
+                                class="rounded-full w-[50px] h-[50px] bg-gray-500"
                                 src={PUBLIC_BASEPATH + '/media/proxy/' + (user.avatar || user.ProfileUrl).replace('_normal.', '.').replace(/http(?:s|):\/\//g, '')}
                                 alt={user.display_name || user.UserName}
                             />
@@ -303,35 +305,54 @@
     {/if}
 {/if}
 
-<div class={'fixed left-0 bottom-5 w-full grid grid-cols-12 gap-5 '}>
-    <div class="col-span-11 md:col-span-7 md:col-start-3">
-        <audio {src} controls class="w-full" />
-    </div>
-    <div class="col-span-1 md:col-span-1">
+<div class={'fixed left-0 bottom-5 w-full p-3 ' + (src ? '' : 'hidden')}>
+    <div class="gap-3 mb-3">
         <button
-            class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3 h-14"
-            on:click={() => {
+                class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
+                on:click={() => {
                 Download(
-                    src,
-                    `${spaceInfo.data.title.replaceAll(' ', '_')}_${spaceInfo.data.id}.aac`
+                    `data:text/plain;charset=utf-8,${JSON.stringify(spaceInfo.data)}`,
+                    `${spaceInfo.data.title.replaceAll(' ', '_')}_${spaceInfo.data.id}_space_info.json`
                 );
             }}
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="100%"
-                height="100%"
-                fill="currentColor"
-                class="bi bi-download"
-                viewBox="0 0 16 16"
-            >
-                <path
-                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"
-                />
-                <path
-                    d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"
-                />
-            </svg>
+            Space info
         </button>
+        <button
+                class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
+                on:click={() => {
+                Download(
+                    `data:text/plain;charset=utf-8,${JSON.stringify(frameInfoList)}`,
+                    `${spaceInfo.data.title.replaceAll(' ', '_')}_${spaceInfo.data.id}_frame_info.json`
+                );
+            }}
+        >
+            Frame info
+        </button>
+        <button
+                class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
+                on:click={() => {
+                Download(
+                    `data:text/plain;charset=utf-8,${encodeURIComponent(m3u8Str)}`,
+                    `${spaceInfo.data.title.replaceAll(' ', '_')}_${spaceInfo.data.id}_m3u8.m3u8`
+                );
+            }}
+        >
+            M3U8
+        </button>
+        <button
+                class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
+                on:click={() => {
+                Download(
+                    src,
+                    `${spaceInfo.data.title.replaceAll(' ', '_')}_${spaceInfo.data.id}_audio.aac`
+                );
+            }}
+        >
+            Audio
+        </button>
+    </div>
+    <div class="w-full">
+        <audio {src} controls class="w-full" />
     </div>
 </div>
