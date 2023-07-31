@@ -7,7 +7,7 @@
     //get data from storage
 
     onMount(() => {
-      darkMode = localStorage.darkMode
+      darkMode = localStorage.darkMode || '0'
     })
 
     const switchDarkModeProxy = () => {
