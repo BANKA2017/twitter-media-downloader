@@ -81,6 +81,8 @@
                         .join('/') + '/';
                 loadingStatus = 'm3u8';
                 await getM3U8(spaceInfo.data.playback);
+            } else {
+              loadingStatus = ''
             }
         } catch (e) {
             console.log(e);
@@ -250,11 +252,17 @@
     </div>
     <div class="font-light">
         <span>Since {getDate(Number(spaceInfo.data.start))}</span>
+        ·
         <span class="px-2 text-sm">{spaceInfo.data.state}</span>
+        ·
+        <a href={`https://twitter.com/${spaceInfo.data.name}`} target="_blank" class="px-2 text-sm underline underline-offset-2 decoration-sky-500">
+            <img class="h-[1rem] w-[1rem] bg-gray-500 rounded-full inline-block" src={PUBLIC_BASEPATH + '/media/proxy/' + spaceInfo.data.avatar.replace(/http(?:s|):\/\//g, '')} alt={spaceInfo.data.display_name} />
+            {spaceInfo.data.display_name}
+        </a>
     </div>
     <div
         class={'h-8 w-full text-center relative ' +
-            (percent >= 100 && src ? 'hidden' : 'inline-block')}
+            ((percent >= 100 && src || !src) ? 'hidden' : 'inline-block')}
     >
         <span class="absolute py-1 -translate-x-1/2 text-current"
             >{count + indexPrefix} / {metaData?.manifest?.segments?.length || 0}</span
