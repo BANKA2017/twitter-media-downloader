@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import { PUBLIC_BASEPATH } from '$env/static/public';
     import TwImage from '$lib/components/TwImage.svelte';
+    import {goto} from "$app/navigation";
 
     let loadingStatus: 'info' | 'error' | '' = 'info'; //m3u8 //'' as done
     let mediaData: any = {};
@@ -12,9 +13,14 @@
             return;
         }
 
-        mediaData = await (
+        const tmpMediaData = await (
             await fetch(`${PUBLIC_BASEPATH}/online/api/v3/data/media/?tweet_id=${id}`)
         ).json();
+        if (tmpMediaData?.data?.card_info?.type === 'audiospace') {
+            goto(`/space?id=${tmpMediaData?.data?.card_info?.id}`, {replaceState: true})
+        } else {
+          mediaData = tmpMediaData
+        }
     };
 
     onMount(async () => {

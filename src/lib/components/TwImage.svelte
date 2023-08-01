@@ -30,7 +30,7 @@
 
 <div id="tweet-image">
     <div
-        class={'grid grid-cols-2 gap-0.5 rounded-xl ' + (realList.length > 1 ? 'aspect-video' : '')}
+        class={'grid grid-cols-2 gap-0.5 overflow-hidden rounded-xl ' + (realList.length > 1 ? 'aspect-video' : 'max-h-[50vh]')}
     >
         {#each realList as media, index}
             <div
@@ -43,7 +43,7 @@
                         ? 'row-end-3'
                         : '')}
             >
-                {#if media.content_type.startsWith('video')}
+                {#if media.content_type.startsWith('video') && media.url}
                     <video
                         class={'w-full h-[100%] rounded-xl ' +
                             (realList.length >= 3 && index !== 0 && !fullMedia
@@ -51,8 +51,7 @@
                                 : '')}
                         src={media.url}
                         controls
-                        preload="metadata"
-                    />
+                        preload="metadata"></video>
                 {/if}
                 {#if !media.content_type.startsWith('video')}
                     <img
