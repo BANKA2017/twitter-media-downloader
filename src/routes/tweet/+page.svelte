@@ -67,7 +67,7 @@
                 <TwImage list={mediaData.data.media_info} />
                 <div class="list-group my-2">
                     {#each mediaData.data.media_info as mediaInfo, mediaOrder}
-                        {#if mediaInfo.content_type !== 'video/mp4'}
+                        {#if mediaInfo.original_type !== 'video'}
                             <a
                                 href={PUBLIC_BASEPATH + '/media/proxy/' + `${mediaInfo.url}:orig`}
                                 target="_blank"
@@ -76,9 +76,9 @@
                                 {mediaInfo.basename}
                                 <div class="gap-2">
                                     <span class="text-white px-2 rounded-full bg-sky-500"
-                                        >{mediaInfo.origin_info_height +
+                                        >{mediaInfo.original_info_height +
                                             'x' +
-                                            mediaInfo.origin_info_width}</span
+                                            mediaInfo.original_info_width}</span
                                     >
                                     <span class="text-white px-2 rounded-full bg-green-500"
                                         >{mediaOrder + 1}</span
@@ -86,7 +86,7 @@
                                 </div>
                             </a>
                         {/if}
-                        {#if mediaInfo.content_type === 'video/mp4'}
+                        {#if mediaInfo.original_type === 'video'}
                             {#each (mediaData.data.video_info[videoIndexList.indexOf(mediaOrder)]?.variants || []).sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0)) as video, order}
                                 <a
                                     href={PUBLIC_BASEPATH + '/media/proxy/' + mediaInfo.url}
