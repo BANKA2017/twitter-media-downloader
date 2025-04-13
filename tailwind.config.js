@@ -6,7 +6,11 @@ export default {
         extend: {}
     },
     daisyui: {
-        themes: ["light", "dark"],
+        themes: ['light', 'dark']
     },
-    plugins: [require('@tailwindcss/forms'), require("daisyui")]
+    plugins: [
+        require('@tailwindcss/forms'),
+        require('daisyui'),
+        require('@tailwindcss/aspect-ratio')
+    ]
 };

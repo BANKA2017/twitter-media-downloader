@@ -1,11 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
         <link rel="icon" href="%sveltekit.assets%/icon.png" />
         <meta name="viewport" content="width=device-width" />
         %sveltekit.head%
-        <script >const d=localStorage.darkMode || '0';window.dark=d;const c=document.documentElement.classList;if((d==='0'&&window.matchMedia('(prefers-color-scheme: dark)').matches&&c.value==='')||(d==='2'&&c.value==='')){c.add('dark')}</script>
+        <script>
+            const d = localStorage.darkMode || '0';
+            window.dark = d;
+            const c = document.documentElement.classList;
+            if (
+                (d === '0' &&
+                    window.matchMedia('(prefers-color-scheme: dark)').matches &&
+                    c.value === '') ||
+                (d === '2' && c.value === '')
+            ) {
+                c.add('dark');
+            }
+        </script>
     </head>
     <body data-sveltekit-preload-data="hover">
         <div style="display: contents">%sveltekit.body%</div>

@@ -7,7 +7,7 @@
     import { beforeNavigate } from '$app/navigation';
     let metaData;
     let m3u8Prefix = '';
-    let m3u8Str = ''
+    let m3u8Str = '';
     let count = 0;
     let firstTimeCursor = 0;
 
@@ -27,7 +27,7 @@
     let controller = null;
 
     const sourceOpen = async () => {
-        count = 0
+        count = 0;
         for (const index in metaData.manifest.segments.slice(indexPrefix, thread + indexPrefix)) {
             const segment = metaData.manifest.segments[index];
             fetchChunkWorker.postMessage({
@@ -82,7 +82,7 @@
                 loadingStatus = 'm3u8';
                 await getM3U8(spaceInfo.data.playback);
             } else {
-              loadingStatus = ''
+                loadingStatus = '';
             }
         } catch (e) {
             console.log(e);
@@ -255,14 +255,24 @@
         ·
         <span class="px-2 text-sm">{spaceInfo.data.state}</span>
         ·
-        <a href={`https://twitter.com/${spaceInfo.data.name}`} target="_blank" class="px-2 text-sm underline underline-offset-2 decoration-sky-500">
-            <img class="h-[1rem] w-[1rem] bg-gray-500 rounded-full inline-block" src={PUBLIC_BASEPATH + '/media/proxy/' + spaceInfo.data.avatar.replace(/http(?:s|):\/\//g, '')} alt={spaceInfo.data.display_name} />
+        <a
+            href={`https://twitter.com/${spaceInfo.data.name}`}
+            target="_blank"
+            class="px-2 text-sm underline underline-offset-2 decoration-sky-500"
+        >
+            <img
+                class="h-[1rem] w-[1rem] bg-gray-500 rounded-full inline-block"
+                src={PUBLIC_BASEPATH +
+                    '/media/proxy/' +
+                    spaceInfo.data.avatar.replace(/http(?:s|):\/\//g, '')}
+                alt={spaceInfo.data.display_name}
+            />
             {spaceInfo.data.display_name}
         </a>
     </div>
     <div
         class={'h-8 w-full text-center relative ' +
-            ((percent >= 100 && src || !src) ? 'hidden' : 'inline-block')}
+            (percent >= 100 && src ? 'hidden' : 'inline-block')}
     >
         <span class="absolute py-1 -translate-x-1/2 text-current"
             >{count + indexPrefix} / {metaData?.manifest?.segments?.length || 0}</span
@@ -301,7 +311,11 @@
                             </div>
                             <img
                                 class="rounded-full w-[50px] h-[50px] bg-gray-500"
-                                src={PUBLIC_BASEPATH + '/media/proxy/' + (user.avatar || user.ProfileUrl).replace('_normal.', '.').replace(/http(?:s|):\/\//g, '')}
+                                src={PUBLIC_BASEPATH +
+                                    '/media/proxy/' +
+                                    (user.avatar || user.ProfileUrl)
+                                        .replace('_normal.', '.')
+                                        .replace(/http(?:s|):\/\//g, '')}
                                 alt={user.display_name || user.UserName}
                             />
                         </div>
@@ -316,8 +330,8 @@
 <div class={'fixed left-0 bottom-5 w-full p-3 ' + (src ? '' : 'hidden')}>
     <div class="gap-3 mb-3">
         <button
-                class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
-                on:click={() => {
+            class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
+            on:click={() => {
                 Download(
                     `data:text/plain;charset=utf-8,${JSON.stringify(spaceInfo.data)}`,
                     `${spaceInfo.data.title.replaceAll(' ', '_')}_${spaceInfo.data.id}_space_info.json`
@@ -327,8 +341,8 @@
             Space info
         </button>
         <button
-                class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
-                on:click={() => {
+            class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
+            on:click={() => {
                 Download(
                     `data:text/plain;charset=utf-8,${JSON.stringify(frameInfoList)}`,
                     `${spaceInfo.data.title.replaceAll(' ', '_')}_${spaceInfo.data.id}_frame_info.json`
@@ -338,8 +352,8 @@
             Frame info
         </button>
         <button
-                class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
-                on:click={() => {
+            class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
+            on:click={() => {
                 Download(
                     `data:text/plain;charset=utf-8,${encodeURIComponent(m3u8Str)}`,
                     `${spaceInfo.data.title.replaceAll(' ', '_')}_${spaceInfo.data.id}_m3u8.m3u8`
@@ -349,8 +363,8 @@
             M3U8
         </button>
         <button
-                class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
-                on:click={() => {
+            class="transition-colors bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-full p-3"
+            on:click={() => {
                 Download(
                     src,
                     `${spaceInfo.data.title.replaceAll(' ', '_')}_${spaceInfo.data.id}_audio.aac`

@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import { PUBLIC_BASEPATH } from '$env/static/public';
     import TwImage from '$lib/components/TwImage.svelte';
-    import {goto} from "$app/navigation";
+    import { goto } from '$app/navigation';
 
     let loadingStatus: 'info' | 'error' | '' = 'info'; //m3u8 //'' as done
     let mediaData: any = {};
@@ -17,9 +17,9 @@
             await fetch(`${PUBLIC_BASEPATH}/online/api/v3/data/media/?tweet_id=${id}`)
         ).json();
         if (tmpMediaData?.data?.card_info?.type === 'audiospace') {
-            goto(`/space?id=${tmpMediaData?.data?.card_info?.id}`, {replaceState: true})
+            goto(`/space?id=${tmpMediaData?.data?.card_info?.id}`, { replaceState: true });
         } else {
-          mediaData = tmpMediaData
+            mediaData = tmpMediaData;
         }
     };
 
@@ -115,9 +115,16 @@
                     {/each}
                 </div>
                 <details class="collapse bg-gray-200 dark:bg-gray-800 transition-colors">
-                    <summary class="collapse-title text-xl font-medium hover:bg-gray-300 dark:hover:bg-gray-700">>_ Meta data</summary>
+                    <summary
+                        class="collapse-title text-xl font-medium hover:bg-gray-300 dark:hover:bg-gray-700"
+                        >>_ Meta data</summary
+                    >
                     <div class="collapse-content overflow-x-scroll bg-gray-800 p-3">
-                        <pre class="rounded-xl text-white">{JSON.stringify(mediaData.data, null, 4)}</pre>
+                        <pre class="rounded-xl text-white">{JSON.stringify(
+                                mediaData.data,
+                                null,
+                                4
+                            )}</pre>
                     </div>
                 </details>
             </div>
