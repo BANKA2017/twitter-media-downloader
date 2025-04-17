@@ -204,7 +204,7 @@ const anyUseScript = () => {
     //);
     const aacBuffer = concatBuffer(
         Object.entries(bufferList)
-            .sort((a, b) => (a[0] > b[0] ? 1 : a[0] < b[0] ? -1 : 0))
+            .sort((a, b) => Number(a[0]) - Number(b[0]))
             .map((buffer) => buffer[1])
     )
 
